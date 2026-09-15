@@ -25,14 +25,22 @@ def parse_row(row: str) -> list:
     # separate into list
     fields = row.split(",")
     
-    try: 
-        exam_id = int(fields[0])
-        date = fields[1]
-        patient_name = fields[2]
-        weight = float(fields[3])
-        height = float(fields[4])
-    except:
-        print("error")
+    exam_id = fields[0]
+    if len(fields) != 5:
+        raise TextFormatException(f"{exam_id}: row does not have 5 fields")
+
+    exam_id, date, patient_name, weight, height = fields
+
+    exam_id = int(exam_id)
+
+    if weight.strip() == "" or height.strip() == "":
+        raise MissingValueException(f"{exam_id}: weight or height missing")
+
+    weight = float(weight)
+    height = float(height)
+
+    if height <= 0 or height > 3:
+        raise MeasurementUnitException(f"{exam_id}: incorrect measurement for height")
 
     return [exam_id, date, patient_name, weight, height]
 
@@ -51,8 +59,12 @@ def main():
             exam_id, date, name, weight, height = parse_row(row)
             bmi = compute_BMI(height, weight)    
             output_f.write(f"{exam_id}, {round(bmi, 2)}\n")
-        except:
-            print("main() error")
+        except TextFormatException as e:
+            print(e)
+        except MissingValueException as e:
+            print(e)
+        except MeasurementUnitException as e:
+            print(e) 
 
     output_f.close()
     input_f.close()
