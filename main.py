@@ -25,7 +25,6 @@ def parse_row(row: str) -> list:
     # separate into list
     fields = row.split(",")
     
-    exam_id = fields[0]
     if len(fields) != 5:
         raise TextFormatException()
 
