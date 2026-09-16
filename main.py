@@ -55,6 +55,7 @@ def main():
     input_f.readline()
     # check each row and write to file
     for row in input_f:
+        exam_id = row.split(",")[0]
         try:
             exam_id, date, name, weight, height = parse_row(row)
             bmi = compute_BMI(height, weight)    
