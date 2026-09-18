@@ -62,7 +62,7 @@ def main():
         except TextFormatException:
             print(f"{exam_id}: row does not have 5 fields")
         except MissingValueException:
-            print(f"{exam_id}: weight or height missing")
+            print(f"{exam_id}: missing value")
         except MeasurementUnitException:
             print(f"{exam_id}: incorrect measurement for height") 
 
